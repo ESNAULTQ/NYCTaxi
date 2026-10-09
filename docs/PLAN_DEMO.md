@@ -1,4 +1,7 @@
-# Plan de démonstration — 15 minutes
+# Plan de démonstration — optionnel
+
+Ce document est conservé comme support de lecture et de contrôle. Aucune
+présentation orale n'est requise pour le rendu individuel.
 
 ## Avant la démonstration
 

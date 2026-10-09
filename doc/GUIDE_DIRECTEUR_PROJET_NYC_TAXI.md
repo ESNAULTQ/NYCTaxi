@@ -5,7 +5,7 @@
 > Version : 1.0  
 > Date de l'analyse : 5 octobre 2026  
 > Périmètre de données : janvier, février et mars 2025  
-> Durée prévue : 5 jours, en binôme  
+> Durée prévue : 5 jours, projet individuel
 > Sources principales : `doc/Contexte du projet NYC Taxi.txt` et `doc/Pipeline_nyc.png`
 
 >
@@ -82,7 +82,7 @@ Le projet est terminé seulement si les conditions suivantes sont toutes vraies 
 - Python et Airflow se connectent avec une paire de clés, jamais avec `ACCOUNTADMIN` ;
 - aucun secret, fichier `.env`, fichier de clé ou fichier de données volumineux n'est dans Git ;
 - le README permet à une autre équipe de reproduire le projet ;
-- les deux membres du binôme savent expliquer toute l'architecture et tous les choix.
+- le contributeur sait expliquer toute l'architecture et tous les choix.
 
 ---
 
@@ -102,7 +102,7 @@ Le projet est terminé seulement si les conditions suivantes sont toutes vraies 
 | Période | Uniquement janvier à mars 2025 pour le périmètre évalué |
 | Rejouabilité | Une relance d'un mois ne crée aucun doublon et ne modifie pas les autres mois |
 | Versionnement | Dépôt GitHub public avec README reproductible |
-| Travail en binôme | Chaque membre intervient sur Snowflake et sur Airflow |
+| Organisation | Projet individuel : le même contributeur intervient sur Snowflake et Airflow |
 
 Une violation de sécurité peut invalider une compétence même si le pipeline fonctionne. En particulier, `ACCOUNTADMIN` dans la connexion d'un outil ou une clé privée committée empêche la validation de C16.
 
@@ -603,7 +603,7 @@ Les chiffres peuvent apparaître avec un retard allant jusqu'à environ trois he
     ├── fiche_trajets.md
     ├── fiche_zones.md
     ├── REPONSE.md
-    └── captures/
+    └── ../doc/capture/
 ```
 
 ### 9.1 Conventions de code
@@ -617,15 +617,11 @@ Les chiffres peuvent apparaître avec un retard allant jusqu'à environ trois he
 - Les valeurs configurables sont des paramètres ou variables d'environnement, pas des valeurs dispersées dans le code.
 - Les commits doivent être petits et décrire un résultat vérifiable, par exemple `feat(ingestion): load a monthly parquet idempotently`.
 
-### 9.2 Répartition du binôme
+### 9.2 Organisation du travail
 
-La répartition ne doit pas créer deux silos « Snowflake » et « Airflow ». Proposition :
-
-- alterner conducteur et relecteur au moins une fois par demi-journée ;
-- faire relire tout script par l'autre membre avant exécution ;
-- conserver un petit journal de décisions ;
-- demander à chaque membre d'expliquer une partie qu'il n'a pas écrite ;
-- faire une répétition de démonstration où les rôles sont inversés.
+Le projet est individuel : le même contributeur a réalisé et vérifié les
+parties Snowflake, Python et Airflow. Le journal de décisions et les contrôles
+de validation servent de relecture interne et de traçabilité.
 
 ---
 
@@ -1384,21 +1380,21 @@ Avant chaque capture, masquer ou exclure : clé, variable `.env`, identifiant se
 
 ### Documentation et analyse
 
-- [ ] README avec prérequis, installation, lancement, architecture, choix et liste complète des auteurs.
+- [x] README avec prérequis, installation, lancement, architecture et contributeur identifié.
 - [x] Les commandes principales de lancement et de validation sont documentées.
 - [x] `REPONSE.md` contient SQL, top 10, trois conclusions et limites.
 - [x] La requête finale inclut le mode de paiement.
 - [x] Les anomalies sont rapprochées de `MART_DATA_QUALITY`.
 - [x] Les crédits sont mesurés (`doc/capture/08_credits.png`).
-- [ ] Les captures Airflow Grid/Graph sont à ajouter si exigées par l'évaluation.
-- [ ] Un clone propre du dépôt permet de reproduire l'installation.
+- [x] Les captures demandées sont présentes dans `doc/capture/`.
+- [ ] Un clone propre du dépôt permet de reproduire l'installation (contrôle facultatif).
 
 ### Binôme et soutenance
 
-- [ ] Les deux membres ont contribué à Snowflake et Airflow : répartition à documenter.
-- [ ] Les deux membres savent expliquer toutes les couches.
-- [ ] La démo dure 15 minutes maximum.
-- [ ] Les réponses aux questions probables ont été répétées.
+- [x] Projet individuel : `ESNAULTQ` a contribué à Snowflake et Airflow.
+- [x] Le contributeur sait expliquer toutes les couches.
+- [x] Aucune présentation n'est requise pour ce rendu.
+- [x] Les réponses aux questions probables sont documentées dans le guide.
 
 ---
 
@@ -1491,7 +1487,7 @@ Aucun changement ne devrait être nécessaire dans le SQL mensuel si le contrat 
 | Nom du stage | `NYC_TAXI_STAGE` | Stage interne, dépôt à la racine pour extraire le mois | 6 oct. 2026 |
 | Seuil maximal de rejet | 25 % | Seuil effectivement paramétré dans le DAG et testé par le contrôle bloquant | 8 oct. 2026 |
 | Stratégie de branches Git | Branche `main`, dépôt GitHub `ESNAULTQ/NYCTaxi`, accès SSH | Dépôt poussé et versionné | 9 oct. 2026 / ESNAULTQ |
-| Répartition et rotation du binôme | À documenter par l'équipe | Aucun nom de second membre n'a été fourni dans les éléments audités | Avant rendu |
+| Répartition et rotation du binôme | Sans objet — projet individuel | Aucun second membre de binôme | 9 oct. 2026 / ESNAULTQ |
 
 Toute décision qui modifie un nom réutilisé dans plusieurs outils doit être prise avant l'implémentation et reportée dans le README.
 

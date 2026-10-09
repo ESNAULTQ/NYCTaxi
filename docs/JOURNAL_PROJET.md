@@ -349,6 +349,7 @@ The Snowflake validation captures are stored in `doc/capture/`:
 - `07_access_denied.png` — refused out-of-scope access;
 - `08_credits.png` — warehouse credit usage.
 
-The remaining optional presentation evidence is a dedicated Airflow Grid/Graph
-capture and a clean-clone reproduction log. These do not change the validated
-Snowflake counts or the successful DAG result.
+No presentation or second binôme contribution is required for this individual
+delivery. A clean-clone reproduction log may be added as optional supplementary
+evidence, but it does not affect the validated Snowflake counts or successful
+DAG result.

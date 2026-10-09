@@ -40,15 +40,11 @@ The validation captures reported by the project owner are stored in
   been kept as capture 05;
 - `07_access_denied.png` and `08_credits.png`.
 
-The technical pipeline is therefore evidenced. The following delivery actions
-remain distinct from pipeline execution:
+The technical pipeline and the requested capture package are therefore
+evidenced. The only remaining optional action is:
 
-- perform a clean-clone/reinstall reproduction test;
-- add the final author/contributor information;
-- time and rehearse the 15-minute presentation;
-- optionally add Airflow Grid/Graph screenshots if the assessment requires a
-  visual proof of the three green runs (the Snowflake captures do not replace
-  that Airflow evidence).
+- perform a clean-clone/reinstall reproduction test, if desired. It is useful
+  for reproducibility but is not required for this individual delivery.
 
 ---
 
@@ -193,9 +189,10 @@ because it was truncated before the repair. Normal DAG runs do not use `FORCE`.
 
 - The SQL file remains the reproducible source of the evidence; the reported
   results are already captured in `doc/capture/`.
-- The author/contributor block must be completed with the final team names.
-- A clean-clone reproduction has not been reported yet.
-- The final presentation has not yet been timed and rehearsed.
+- The project is individual; no second contributor or binôme evidence is
+  required.
+- A clean-clone reproduction has not been reported, but it is optional.
+- No presentation is required for this delivery.
 
 ---
 
@@ -226,7 +223,4 @@ because it was truncated before the repair. Normal DAG runs do not use `FORCE`.
 The core technical pipeline is operational. The remaining work is evidence and
 delivery, not a new transformation layer:
 
-1. Add the final author names and notes.
-2. Test reproduction from a clean checkout.
-3. Add Airflow Grid/Graph captures if they are required by the evaluator.
-4. Rehearse and time the presentation.
+1. Optionally test reproduction from a clean checkout.

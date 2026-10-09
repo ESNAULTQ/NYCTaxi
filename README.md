@@ -4,8 +4,8 @@ Projet réalisé dans le cadre du parcours Data Engineer. Ce dépôt contient le
 pipeline fonctionnel, ses validations et les éléments de preuve de la livraison
 pour janvier à mars 2025.
 
-Contributeur identifié dans l'historique Git : `ESNAULTQ`. La liste complète
-des membres du binôme doit être ajoutée par l'équipe avant le rendu final.
+Contributeur du projet : `ESNAULTQ`. Le projet est réalisé individuellement ;
+aucun second membre de binôme n'est à ajouter.
 
 ## Dans quel ordre lire
 

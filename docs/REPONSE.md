@@ -1,7 +1,7 @@
 # Réponse à la direction d’Hudson Cab Partners
 
-> Livrable technique — contributeur identifié : `ESNAULTQ`.
-> Ajouter le second membre du binôme avant le rendu final.
+> Livrable technique — contributeur : `ESNAULTQ`.
+> Projet réalisé individuellement.
 
 ## La question
 
