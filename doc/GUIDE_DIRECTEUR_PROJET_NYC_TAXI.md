@@ -8,6 +8,12 @@
 > Durée prévue : 5 jours, en binôme  
 > Sources principales : `doc/Contexte du projet NYC Taxi.txt` et `doc/Pipeline_nyc.png`
 
+>
+> **Mise à jour livraison — 9 octobre 2026.** Les sections décrivant le
+> démarrage du 5 octobre sont conservées comme historique du projet. Pour
+> connaître l'état réellement atteint, les captures disponibles et les actions
+> restantes, consulter [`docs/ETAT_REEL_PROJET.md`](../docs/ETAT_REEL_PROJET.md).
+
 ---
 
 ## 1. Rôle de ce document
@@ -102,7 +108,11 @@ Une violation de sécurité peut invalider une compétence même si le pipeline 
 
 ---
 
-## 4. État initial constaté le 5 octobre 2026
+## 4. État initial constaté le 5 octobre 2026 (historique)
+
+Cette section décrit le point de départ et ne doit pas être relue comme une
+liste d'actions encore à effectuer. Les critères de sortie actuels sont ceux de
+la section 15 et du document d'état réel.
 
 ### 4.1 Contenu actuel du dossier de travail
 
@@ -1317,7 +1327,8 @@ ORDER BY s.demand_rank, pm.payment_nb_trips DESC, payment_type;
 
 ### 17.6 Captures obligatoires
 
-Dans `docs/captures/`, avec des noms explicites :
+Dans `doc/capture/`, avec des noms explicites (répertoire réellement utilisé
+par ce dépôt) :
 
 - trois exécutions réussies dans Grid ;
 - graphe complet du DAG ;
@@ -1336,55 +1347,55 @@ Avant chaque capture, masquer ou exclure : clé, variable `.env`, identifiant se
 
 ### Infrastructure et sécurité
 
-- [ ] Warehouse unique, `XSMALL`, auto-suspend 60 s maximum.
-- [ ] Base et quatre schémas aux noms exacts.
-- [ ] Rôle personnalisé rattaché à `SYSADMIN`.
-- [ ] Utilisateur de service sans mot de passe et avec clé publique.
-- [ ] Python et Airflow utilisent ce rôle, jamais `ACCOUNTADMIN`.
-- [ ] Test d'accès refusé conservé.
-- [ ] Aucun secret dans Git ou l'image.
+- [x] Warehouse unique, `XSMALL`, auto-suspend 60 s maximum.
+- [x] Base et quatre schémas aux noms exacts.
+- [x] Rôle personnalisé rattaché à `SYSADMIN`.
+- [x] Utilisateur de service sans mot de passe et avec clé publique.
+- [x] Python et Airflow utilisent ce rôle, jamais `ACCOUNTADMIN`.
+- [x] Test d'accès refusé conservé (`doc/capture/07_access_denied.png`).
+- [x] Aucun secret dans Git ou l'image.
 
 ### Données et ingestion
 
-- [ ] Fiches sources complètes avec volumes mesurés.
-- [ ] Contrat RAW respecté caractère par caractère.
-- [ ] 3 475 226 lignes pour janvier.
-- [ ] 11 198 026 lignes RAW après trois mois.
-- [ ] 265 zones uniques, chargées une seule fois par Python hors Airflow.
-- [ ] Colonnes `_source_file` et `_loaded_at` remplies.
-- [ ] Montants décimaux préservés.
-- [ ] Relance RAW sans doublon.
+- [x] Fiches sources complètes avec volumes mesurés.
+- [x] Contrat RAW respecté caractère par caractère.
+- [x] 3 475 226 lignes pour janvier.
+- [x] 11 198 026 lignes RAW après trois mois.
+- [x] 265 zones uniques, chargées une seule fois par Python hors Airflow.
+- [x] Colonnes `_source_file` et `_loaded_at` remplies.
+- [x] Montants décimaux préservés.
+- [x] Relance RAW sans doublon.
 
 ### Airflow et transformations
 
-- [ ] Code Airflow 3.
-- [ ] Date logique utilisée.
-- [ ] Un run traite un mois de trajets ; le CSV des zones reste hors ingestion Airflow.
-- [ ] `catchup=True`, trois runs, `max_active_runs=1`.
-- [ ] Une tâche par fichier SQL.
-- [ ] TaskGroups lisibles.
-- [ ] SQL fourni non modifié.
-- [ ] Contrôle fourni et deux contrôles supplémentaires.
-- [ ] Échec bloquant démontré.
-- [ ] Relance de février stable.
-- [ ] 10 382 378 lignes dans `FCT_TRIPS`.
-- [ ] 11 524 lignes dans `MART_ZONE_HOURLY_DEMAND`.
-- [ ] 18 lignes dans `MART_DATA_QUALITY`.
+- [x] Code Airflow 3.
+- [x] Date logique utilisée.
+- [x] Un run traite un mois de trajets ; le CSV des zones reste hors ingestion Airflow.
+- [x] `catchup=True`, trois runs, `max_active_runs=1`.
+- [x] Une tâche par fichier SQL.
+- [x] TaskGroups lisibles.
+- [x] SQL fourni non modifié.
+- [x] Contrôle fourni et deux contrôles supplémentaires.
+- [x] Échec bloquant démontré puis retour au vert.
+- [x] Relance de février stable.
+- [x] 10 382 378 lignes dans `FCT_TRIPS`.
+- [x] 11 524 lignes dans `MART_ZONE_HOURLY_DEMAND`.
+- [x] 18 lignes dans `MART_DATA_QUALITY`.
 
 ### Documentation et analyse
 
-- [ ] README avec prérequis, installation, lancement, architecture, choix, auteurs.
-- [ ] Toutes les commandes du README testées.
-- [ ] `REPONSE.md` contient SQL, top 10, trois conclusions et limites.
-- [ ] La requête finale inclut le mode de paiement.
-- [ ] Les anomalies sont rapprochées de `MART_DATA_QUALITY`.
-- [ ] Les crédits sont mesurés.
-- [ ] Toutes les captures obligatoires sont présentes et lisibles.
+- [ ] README avec prérequis, installation, lancement, architecture, choix et liste complète des auteurs.
+- [x] Les commandes principales de lancement et de validation sont documentées.
+- [x] `REPONSE.md` contient SQL, top 10, trois conclusions et limites.
+- [x] La requête finale inclut le mode de paiement.
+- [x] Les anomalies sont rapprochées de `MART_DATA_QUALITY`.
+- [x] Les crédits sont mesurés (`doc/capture/08_credits.png`).
+- [ ] Les captures Airflow Grid/Graph sont à ajouter si exigées par l'évaluation.
 - [ ] Un clone propre du dépôt permet de reproduire l'installation.
 
 ### Binôme et soutenance
 
-- [ ] Les deux membres ont contribué à Snowflake et Airflow.
+- [ ] Les deux membres ont contribué à Snowflake et Airflow : répartition à documenter.
 - [ ] Les deux membres savent expliquer toutes les couches.
 - [ ] La démo dure 15 minutes maximum.
 - [ ] Les réponses aux questions probables ont été répétées.
@@ -1469,18 +1480,18 @@ Aucun changement ne devrait être nécessaire dans le SQL mensuel si le contrat 
 
 ---
 
-## 22. Journal de décisions à compléter
+## 22. Journal de décisions — état de clôture
 
 | Décision | Choix | Justification | Date / auteurs |
 |---|---|---|---|
-| Compte Snowflake commun ou individuel | À décider | | |
-| Nom du warehouse | `NYC_TAXI_WH` proposé | | |
-| Nom du rôle outils | `NYC_TAXI_ENGINEER` proposé | | |
-| Nom de l'utilisateur de service | `NYC_TAXI_AIRFLOW_SVC` proposé | | |
-| Nom du stage | `NYC_TAXI_STAGE` proposé | | |
-| Seuil maximal de rejet | 10 % initial proposé | À confirmer sur les données | |
-| Stratégie de branches Git | À décider | | |
-| Répartition et rotation du binôme | À décider | | |
+| Compte Snowflake commun ou individuel | Compte `TMUEJDS-HB86981` utilisé pour le projet | Les outils se connectent avec le compte de service, jamais avec le compte humain | 5–9 oct. 2026 / ESNAULTQ |
+| Nom du warehouse | `NYC_TAXI_WH` | XSMALL, auto-suspend 60 s, auto-resume | 5 oct. 2026 |
+| Nom du rôle outils | `NYC_TAXI_ENGINEER` | Principe du moindre privilège | 5 oct. 2026 |
+| Nom de l'utilisateur de service | `NYC_TAXI_AIRFLOW_SVC` | Authentification par paire de clés | 5 oct. 2026 |
+| Nom du stage | `NYC_TAXI_STAGE` | Stage interne, dépôt à la racine pour extraire le mois | 6 oct. 2026 |
+| Seuil maximal de rejet | 25 % | Seuil effectivement paramétré dans le DAG et testé par le contrôle bloquant | 8 oct. 2026 |
+| Stratégie de branches Git | Branche `main`, dépôt GitHub `ESNAULTQ/NYCTaxi`, accès SSH | Dépôt poussé et versionné | 9 oct. 2026 / ESNAULTQ |
+| Répartition et rotation du binôme | À documenter par l'équipe | Aucun nom de second membre n'a été fourni dans les éléments audités | Avant rendu |
 
 Toute décision qui modifie un nom réutilisé dans plusieurs outils doit être prise avant l'implémentation et reportée dans le README.
 

@@ -336,15 +336,19 @@ Midtown Center — weekday, 18:00, credit card
 | C15 — Integrate ETL | Airflow TaskGroups, dependency graph, three monthly runs |
 | C16 — Manage the warehouse | Least privilege, key pair, no secrets in code, cost controls |
 
-## Remaining presentation evidence
+## Evidence inventory at handoff
 
-Before submission, capture and store in `docs/captures/`:
+The Snowflake validation captures are stored in `doc/capture/`:
 
-- three green Airflow monthly runs;
-- complete Airflow Graph view;
-- intentional quality-check failure with downstream blocked;
-- `COPY_HISTORY` result;
-- role and service-user grants;
-- authorized and refused access examples;
-- warehouse credit usage;
-- final business-query result.
+- `01_final_counts.png` — final object counts;
+- `02_data_integrity.png` — parity and uniqueness;
+- `03_data_quality.png` — quality breakdown;
+- `04_copy_history.png` — load history and idempotence;
+- `06_warehouse.png` — warehouse configuration and the grants evidence kept
+  with it instead of a separate capture 05;
+- `07_access_denied.png` — refused out-of-scope access;
+- `08_credits.png` — warehouse credit usage.
+
+The remaining optional presentation evidence is a dedicated Airflow Grid/Graph
+capture and a clean-clone reproduction log. These do not change the validated
+Snowflake counts or the successful DAG result.

@@ -1,4 +1,4 @@
-"""Example Dags test. This test ensures that all Dags have tags, retries set to two, and no import errors. This is an example pytest and may not be fit the context of your Dags. Feel free to add and remove tests."""
+"""Project DAG contract tests for the NYC Taxi Airflow project."""
 
 import os
 import logging
@@ -19,25 +19,22 @@ def suppress_logging(namespace):
 
 
 def get_import_errors():
-    """
-    Generate a tuple for import errors in the dag bag
-    """
+    """Return import errors from the project DAG collection."""
     with suppress_logging("airflow"):
         dag_bag = DagBag(include_examples=False)
 
         def strip_path_prefix(path):
             return os.path.relpath(path, os.environ.get("AIRFLOW_HOME"))
 
-        # prepend "(None,None)" to ensure that a test object is always created even if it's a no op.
+        # Keep one placeholder so pytest still creates a test when there are no
+        # import errors.
         return [(None, None)] + [
             (strip_path_prefix(k), v.strip()) for k, v in dag_bag.import_errors.items()
         ]
 
 
 def get_dags():
-    """
-    Generate a tuple of dag_id, <DAG objects> in the DagBag
-    """
+    """Return project DAGs and their relative source paths."""
     with suppress_logging("airflow"):
         dag_bag = DagBag(include_examples=False)
 
@@ -51,7 +48,7 @@ def get_dags():
     "rel_path,rv", get_import_errors(), ids=[x[0] for x in get_import_errors()]
 )
 def test_file_imports(rel_path, rv):
-    """Test for import errors on a file"""
+    """Fail when a project DAG cannot be imported."""
     if rel_path and rv:
         raise Exception(f"{rel_path} failed to import with message \n {rv}")
 
@@ -63,9 +60,7 @@ APPROVED_TAGS = {}
     "dag_id,dag,fileloc", get_dags(), ids=[x[2] for x in get_dags()]
 )
 def test_dag_tags(dag_id, dag, fileloc):
-    """
-    test if a Dag is tagged and if those TAGs are in the approved list
-    """
+    """Require tags on every project DAG."""
     assert dag.tags, f"{dag_id} in {fileloc} has no tags"
     if APPROVED_TAGS:
         assert not set(dag.tags) - APPROVED_TAGS
@@ -75,9 +70,7 @@ def test_dag_tags(dag_id, dag, fileloc):
     "dag_id,dag, fileloc", get_dags(), ids=[x[2] for x in get_dags()]
 )
 def test_dag_retries(dag_id, dag, fileloc):
-    """
-    test if a Dag has retries set
-    """
+    """Require at least two retries for the project DAG default policy."""
     assert (
         dag.default_args.get("retries", None) >= 2
     ), f"{dag_id} in {fileloc} must have task retries >= 2."

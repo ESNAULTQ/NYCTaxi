@@ -1,21 +1,27 @@
-# Kit de démarrage — Pipeline médaillon NYC Yellow Taxi (Snowflake et Airflow)
+# Pipeline médaillon NYC Yellow Taxi — Snowflake et Airflow
 
-Point de départ du brief. Ce kit contient ce qui est fourni ; tout le reste est à construire.
+Projet réalisé dans le cadre du parcours Data Engineer. Ce dépôt contient le
+pipeline fonctionnel, ses validations et les éléments de preuve de la livraison
+pour janvier à mars 2025.
+
+Contributeur identifié dans l'historique Git : `ESNAULTQ`. La liste complète
+des membres du binôme doit être ajoutée par l'équipe avant le rendu final.
 
 ## Dans quel ordre lire
 
-1. **Le brief** : la situation, ce qui est attendu, comment vous serez évalués.
-2. **Ce README** : ce que contient le kit.
-3. **`ETAPES.md`**, chaque matin : le détail de la journée, les pièges, le résultat à obtenir.
-4. **`CONTRAT_RAW.md`**, au jour 2 : les noms que votre entrepôt doit respecter.
-
-Avant le premier jour, lancez `bash verifier_poste.sh` : tout doit afficher `OK`.
+1. **Le brief** (`doc/Contexte du projet NYC Taxi.txt`) : contexte et critères.
+2. **Ce README** : architecture, démarrage et résultats de référence.
+3. **`docs/ETAT_REEL_PROJET.md`** : travaux réellement exécutés et preuves
+   encore à compléter avant le rendu final.
+4. **`docs/JOURNAL_PROJET.md`** : chronologie des jours 1 à 5.
+5. **`doc/GUIDE_DIRECTEUR_PROJET_NYC_TAXI.md`** : règles, compétences et
+   critères de livraison.
 
 ## Ce que vous allez construire
 
 ![Schéma du pipeline](docs/architecture.png)
 
-## Contenu du kit
+## Contenu du dépôt
 
 ```
 .
@@ -24,8 +30,8 @@ Avant le premier jour, lancez `bash verifier_poste.sh` : tout doit afficher `OK`
 ├── CONTRAT_RAW.md                 noms et colonnes que votre entrepôt doit contenir
 ├── verifier_poste.sh              vérifie Python, Git, Docker, Astro CLI, OpenSSL
 ├── .gitignore                     exclut les clés, le .env et les fichiers téléchargés
-├── snowflake/                     À ÉCRIRE : scripts d'infrastructure et de couche RAW
-├── ingestion/                     À ÉCRIRE : script Python de chargement d'un mois
+├── snowflake/                     infrastructure, objets RAW et réparation documentée
+├── ingestion/                     loaders Python et test de connexion
 ├── docs/
 │   ├── architecture.png           le schéma du pipeline
 │   ├── parcours.png               les cinq journées en un coup d'œil
@@ -34,13 +40,13 @@ Avant le premier jour, lancez `bash verifier_poste.sh` : tout doit afficher `OK`
 └── airflow/
     ├── requirements.txt           dépendances Python du projet Airflow
     ├── .env.example               format de la connexion Snowflake
-    ├── dags/                      À ÉCRIRE : votre DAG
-    └── include/sql/               FOURNI : les fichiers SQL, à ne pas modifier
+    ├── dags/                      DAG mensuel et test de connexion
+    └── include/sql/               SQL de staging, intermediate, marts et contrôles
         ├── 00_tables.sql          crée les trois tables alimentées mois par mois
         ├── staging/               2 vues de renommage + les tables de codes
         ├── intermediate/          trajets étiquetés, puis trajets valides enrichis
         ├── marts/                 5 dimensions, la table de faits, 3 tables d'analyse
-        └── controles/             1 contrôle fourni comme modèle, les autres À ÉCRIRE
+        └── controles/             contrôles qualité exécutés par le DAG
 ```
 
 Les fichiers `.gitkeep` ne servent qu'à conserver les dossiers vides dans Git : vous pouvez les supprimer dès que vous y ajoutez un fichier.
@@ -82,20 +88,16 @@ Les quatre paramètres attendus par les fichiers fournis :
 
 ## Le contrôle fourni
 
-`controles/raw_mois_charge.sql` vérifie que le mois traité est bien présent dans RAW. Une requête de contrôle renvoie une seule ligne : si une de ses valeurs est fausse, la tâche échoue et la suite ne s'exécute pas. Écrivez les vôtres sur ce modèle.
+`controles/raw_mois_charge.sql` vérifie que le mois traité est bien présent dans
+RAW. Les contrôles de parité, de taux de rejet, d'unicité et de présence des
+faits sont également exécutés par le DAG. Une requête de contrôle renvoie une
+seule ligne : si sa valeur est fausse, la tâche échoue et la suite ne s'exécute
+pas.
 
-## Mettre en place le projet Airflow (jour 3)
+## Démarrer le projet Airflow
 
-```bash
-cd airflow
-astro dev init                    # le dossier n'est pas vide : répondre y
-```
-
-`astro dev init` génère le `Dockerfile` et les fichiers du projet, sans toucher à `requirements.txt` ni à `include/`. Ensuite :
-
-1. Supprimer `dags/exampledag.py`.
-2. Créer le fichier `airflow/.env` à partir de `airflow/.env.example`. La clé privée y tient sur une seule ligne : voir la section 3 du guide Airflow.
-3. Démarrer :
+Le projet Astro est déjà initialisé dans `airflow/`. La clé privée et le fichier
+`.env` restent locaux et ne doivent jamais être ajoutés à Git. Démarrer :
 
 ```bash
 astro dev start
@@ -103,9 +105,10 @@ astro dev start
 
 L'adresse de l'interface est affichée à la fin de la commande.
 
-- L'identifiant de connexion à utiliser dans votre code est `snowflake_nyc_taxi`.
-- Un DAG est en pause à sa création : activez-le avec son interrupteur. N'utilisez pas le bouton Trigger pour le DAG de chargement : il lance une exécution datée d'aujourd'hui.
-- Quand vous ajoutez des tâches à un DAG dont les exécutions sont déjà terminées, elles ne tournent pas toutes seules : ouvrez chaque exécution et relancez-la avec Clear.
+- L'identifiant de connexion est `snowflake_nyc_taxi`.
+- Activer `nyc_yellow_taxi_monthly` avec son interrupteur.
+- Pour rejouer une exécution historique, utiliser **Clear** sur les tâches
+  concernées ; ne pas utiliser `Trigger DAG` sans date logique explicite.
 
 ## Résultats attendus
 

@@ -29,17 +29,26 @@ MART_DATA_QUALITY        18
 - The final business aggregation was executed and its top 10 results were
   recorded in `docs/REPONSE.md`.
 
-### Prepared but not yet evidenced as completed
+### Evidence status at the latest audit
 
-- Account-level grant screenshots.
-- A deliberately refused out-of-scope Snowflake action.
-- Warehouse credit usage from `SNOWFLAKE.ACCOUNT_USAGE`.
-- The complete capture package in `docs/captures/`.
-- A clean clone/reinstall reproduction test.
-- A timed rehearsal of the 15-minute presentation.
+The validation captures reported by the project owner are stored in
+`doc/capture/` (the repository's current capture directory):
 
-The last group is not a pipeline failure; it is final delivery evidence that
-still has to be collected.
+- `01_final_counts.png`, `02_data_integrity.png`, `03_data_quality.png` and
+  `04_copy_history.png`;
+- `06_warehouse.png`, which also contains the grants evidence that would have
+  been kept as capture 05;
+- `07_access_denied.png` and `08_credits.png`.
+
+The technical pipeline is therefore evidenced. The following delivery actions
+remain distinct from pipeline execution:
+
+- perform a clean-clone/reinstall reproduction test;
+- add the final author/contributor information;
+- time and rehearse the 15-minute presentation;
+- optionally add Airflow Grid/Graph screenshots if the assessment requires a
+  visual proof of the three green runs (the Snowflake captures do not replace
+  that Airflow evidence).
 
 ---
 
@@ -180,14 +189,12 @@ because it was truncated before the repair. Normal DAG runs do not use `FORCE`.
 - Searched project documentation and code for private-key material; none was
   found.
 
-### Only prepared, not yet executed by the user
+### Remaining handoff actions
 
-- `docs/validation_day5.sql` has been written, but its grants and credit-query
-  sections still need to be run in Snowsight.
-- The final documentation exists, but author names and screenshots still need
-  to be added.
-- The access-denied test still needs to be executed and captured.
-- A clean-clone reproduction has not been performed.
+- The SQL file remains the reproducible source of the evidence; the reported
+  results are already captured in `doc/capture/`.
+- The author/contributor block must be completed with the final team names.
+- A clean-clone reproduction has not been reported yet.
 - The final presentation has not yet been timed and rehearsed.
 
 ---
@@ -219,8 +226,7 @@ because it was truncated before the repair. Normal DAG runs do not use `FORCE`.
 The core technical pipeline is operational. The remaining work is evidence and
 delivery, not a new transformation layer:
 
-1. Run the final validation, grants, and credit queries.
-2. Execute and capture the refused-access test.
-3. Add the required screenshots under `docs/captures/`.
-4. Add author names and final notes.
-5. Test reproduction from a clean checkout and rehearse the presentation.
+1. Add the final author names and notes.
+2. Test reproduction from a clean checkout.
+3. Add Airflow Grid/Graph captures if they are required by the evaluator.
+4. Rehearse and time the presentation.

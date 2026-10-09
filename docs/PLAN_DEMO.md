@@ -7,6 +7,8 @@
 - Préparer Airflow sur la vue Grid de `nyc_yellow_taxi_monthly`.
 - Ouvrir `docs/REPONSE.md` et le schéma `docs/architecture.png`.
 - Ne jamais ouvrir `.env`, `rsa_key.p8` ou une valeur secrète.
+- Préparer les captures déjà collectées dans `doc/capture/` ; la capture 05
+  est incluse dans `06_warehouse.png` avec les grants.
 
 ## Déroulé
 

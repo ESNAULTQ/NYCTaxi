@@ -1,45 +1,66 @@
-Overview
-========
+# Airflow local — NYC Yellow Taxi
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+Ce dossier contient le projet Astro/Airflow qui orchestre le chargement mensuel
+des fichiers Yellow Taxi et les transformations Snowflake.
 
-Project Contents
-================
+## Contenu utile
 
-Your Astro project contains the following files and folders:
+- `dags/nyc_yellow_taxi_monthly.py` : DAG mensuel, ingestion, transformations
+  et contrôles qualité bloquants ;
+- `dags/test_snowflake_connection.py` : test de l'identité Snowflake ;
+- `include/sql/` : scripts SQL de staging, intermediate, dimensions, faits,
+  marts et contrôles ;
+- `requirements.txt` : dépendances Python ;
+- `.env.example` : modèle local de configuration, sans secret réel.
 
-- dags: This folder contains the Python files for your Airflow Dags. By default, this directory includes one example Dag:
-    - `example_astronauts`: This Dag shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The Dag uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this Dag works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop Dags in this project.
+Le DAG mensuel utilise la connexion Airflow `snowflake_nyc_taxi` et le compte de
+service Snowflake `NYC_TAXI_AIRFLOW_SVC` avec le rôle `NYC_TAXI_ENGINEER`.
 
-Deploy Your Project Locally
-===========================
+## Démarrage
 
-Start Airflow on your local machine by running 'astro dev start'.
+Prérequis : Docker Desktop démarré, la clé privée Snowflake conservée hors du
+dépôt et la connexion Airflow configurée dans l'interface.
 
-This command will spin up five Docker containers on your machine, each for a different Airflow component:
+```bash
+cd /home/simplon/projects/NYCTaxi/airflow
+astro dev start
+```
 
-- Postgres: Airflow's Metadata Database
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- Dag Processor: The Airflow component responsible for parsing Dags
-- API Server: The Airflow component responsible for serving the Airflow UI and API
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+Ouvrir ensuite <http://airflow.localhost:6563>. Si l'interface ne s'ouvre pas
+automatiquement, saisir cette adresse dans le navigateur. Vérifier d'abord que
+les conteneurs sont actifs avec `docker ps`.
 
-When all five containers are ready the command will open the browser to the Airflow UI at http://localhost:8080/. You should also be able to access your Postgres Database at 'localhost:5432/postgres' with username 'postgres' and password 'postgres'.
+Pour arrêter l'environnement :
 
-Note: If you already have either of the above ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+```bash
+astro dev stop
+```
 
-Deploy Your Project to Astronomer
-=================================
+## Utilisation du DAG
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+1. Dans **DAGs**, activer `nyc_yellow_taxi_monthly` avec son interrupteur.
+2. Utiliser les exécutions planifiées pour janvier, février et mars 2025.
+3. Pour rejouer une tâche d'une exécution déjà terminée, sélectionner les
+   tâches puis utiliser **Clear**.
+4. Pour tester le contrôle bloquant, modifier temporairement le seuil prévu
+   dans le DAG, lancer une exécution contrôlée, vérifier l'échec et restaurer
+   immédiatement la valeur avant de relancer.
 
-Contact
-=======
+Éviter **Trigger DAG** pour un mois historique sans définir explicitement la
+date logique : le bouton crée par défaut une exécution datée du jour courant.
+Le DAG est séquentiel (`max_active_runs=1`) afin d'éviter les remplacements
+concurrents des tables mensuelles.
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+## Vérifications avant livraison
+
+- `test_snowflake_connection` renvoie l'utilisateur de service, le rôle
+  `NYC_TAXI_ENGINEER`, le warehouse `NYC_TAXI_WH`, la base `NYC_TAXI` et le
+  schéma `RAW` ;
+- les trois exécutions mensuelles sont vertes ;
+- les contrôles `raw_month_loaded`, `staging_row_parity`,
+  `rejection_rate_below_threshold`, `enriched_trip_keys_unique` et
+  `fact_month_present` sont verts ;
+- aucun `.env`, clé privée ou mot de passe n'est ajouté à Git.
+
+Les résultats et les requêtes de preuve sont regroupés dans
+`../docs/validation_day5.sql` et `../docs/ETAT_REEL_PROJET.md`.

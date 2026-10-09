@@ -1,5 +1,8 @@
 # Réponse à la direction d’Hudson Cab Partners
 
+> Livrable technique — contributeur identifié : `ESNAULTQ`.
+> Ajouter le second membre du binôme avant le rendu final.
+
 ## La question
 
 Où et quand la demande de taxis jaunes est-elle la plus forte à New York, et
