@@ -1,0 +1,16 @@
+-- Configuration de la clé publique de l'utilisateur de service.
+--
+-- 1. Copier ce fichier hors du dépôt sous un nom non versionné, par exemple :
+--      cp snowflake/02_set_service_public_key.sql.example /tmp/02_set_service_public_key.sql
+-- 2. Remplacer UNIQUEMENT la valeur entre quotes par le contenu de rsa_key.pub :
+--      - une seule ligne ;
+--      - sans -----BEGIN PUBLIC KEY----- ni -----END PUBLIC KEY----- ;
+--      - la clé privée rsa_key.p8 ne doit jamais être copiée ici.
+-- 3. Exécuter le fichier local avec USERADMIN dans Snowsight.
+
+USE ROLE USERADMIN;
+
+ALTER USER NYC_TAXI_AIRFLOW_SVC
+  SET RSA_PUBLIC_KEY = 'COLLER_ICI_LA_CLE_PUBLIQUE_SANS_EN_TETE_NI_RETOUR_A_LA_LIGNE';
+
+DESC USER NYC_TAXI_AIRFLOW_SVC;
